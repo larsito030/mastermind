@@ -5,8 +5,8 @@
 	if(isset($_POST['new'])) {
 		get_random_sample();
 	}
-	print_r($_SESSION['random']);
-	print_r($_POST['rows']);
+	//print_r($_SESSION['random']);
+	//print_r($_POST['rows']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,15 +19,14 @@
 		<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
 		<link rel="stylesheet" href="/Superhirn/app.css" type="text/css"/>
 		<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+		<script type="text/javascript" src="app.js"></script>
 		<script text="javascript">
 
 
-			array = [];
+			
 			$(document).ready(function() {
-				//array_rand = <?php echo json_encode($_SESSION['random']);?>;
-				//console.log(array_rand);
+				array = [];
 				rows = ($('.row').find('li').length)/4;
-				console.log("rows: "+rows);
 				var color_field = $('.color_picker>ul>li');
 				var colors = $('.color_picker>ul');
 				no = 0;
@@ -51,12 +50,6 @@
   					y_pos = offset.top + 16;
 					x_pos = offset.left + parseInt($(row_active).css('width')) + 10;
 				});
-				console.log(y_pos);
-				console.log('Offset left:'+offset.left);
-				console.log('width: ' + $(row_active).css('width'));
-				console.log('X Pos:'+x_pos);
-				console.log(row_active);
-
 				var ok_button = "<button name=\"ok\" id=\"check\" value=\"OK\">OK</button>";
 
 				$("<button></button>", {
@@ -77,61 +70,19 @@
 				$(color_field).on('click', function(){
 					color = $(this).find('span').attr('id');
 					css_color = $(this).find('span').css('background');
-					console.log(css_color);
-					console.log('color: '+color);
 				});
 				$('#active').on('click','li', function(){
-						console.log('clicked');
 							var index_guess = $(this).index();
 							array[index_guess] = color;
 							$(this).find('span').css('background', css_color);
-							console.log(array);
 				
 				});
 
-				array_rand = <?php echo json_encode($_SESSION['random']);?>;
+				//array_rand = <?php echo json_encode($_SESSION['random']);?>;
+				array_rand = shuffle(initial_array);
+				console.log("array_rand: "+array_rand);
 				
-				function colors_intersection(el){
-					return array_rand.indexOf(el) !== -1;
-					}
-
-				function equal_position(el){
-					return colors_match.indexOf(el) === array_rand.indexOf(el);
-				}
-
-				function get_matching_hint_html(){
-					var bl = black - white;
-					console.log('test: ' + bl);
-					//$('.results').find('li:eq('+ 1 +')').addClass('black');
-					
-					for(var i=0;i<bl;i++){
-						$('.results:eq('+ prev +')').find('li:eq('+ i +')').addClass('black');
-					}	
-					for(var i=bl;i<(bl+white);i++){
-						$('.results:eq('+ prev +')').find('li:eq('+ i +')').addClass('white');
-					}
-					console.log(prev);
-				}
-
-				function check_if_solved() {
-					if(white === 4) {
-						success_msg();
-					}
-				}
-
-				function fail_message() {
-					if(white !== 4 && num === (rows-1)) {
-								alert("fail");
-					}
-				}
-
-				function success_msg() {
-					console.log('gewonnen');
-					var x = no > 1 ? "s" : "";
-					$('body').append("<div id='success'>Congratulations! It took you "+num+" attempt"+x+"<button id='rm_msg'>OK</button></div>");
-					//$('body').append("<p>Herzlichen Glückwunsch!</p>");
-				}
-
+				
 				$('body').on('click','#ok', function(){
 						$('#active').off();
 						colors_match = array.filter(colors_intersection);
@@ -139,34 +90,25 @@
 						var total_match = colors_match.filter(equal_position);
 						white = total_match.length;
 						prev = no.toString();
-						console.log("Black: " + black);
-						console.log("White: " + white);
-						console.log("num: "+typeof null);
 						no++;
 						num = no.toString();
 						$('.row').removeAttr('id');
 						row_active = "";
 						row_active = $('.row:eq('+ num +')');
 						$(row_active).attr('id','active');
-						//$('.row').css('background','gray');
-						console.log("row active: " + no + " sting: " + num);
 						get_matching_hint_html();
 						check_if_solved();
 						fail_message();
 						y_pos = y_pos + parseInt($('.row').css('height'));
 						$('#ok').css('top', y_pos);
-						console.log(y_pos);
 						$(row_active).on('click','li', function(){
-							console.log('clicked');
 							var index_guess = $(this).index();
 							array[index_guess] = color;
 							$(this).find('span').css('background', css_color);
-							console.log(array);
-				});
-	
-				});
 
+				});
 	
+				});
 
 			});
 		</script>
