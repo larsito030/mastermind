@@ -5,6 +5,8 @@
 	if(isset($_POST['new'])) {
 		get_random_sample();
 	}
+	print_r($_SESSION['random']);
+	print_r($_POST['rows']);
 ?>
 <!DOCTYPE html>
 <html>
@@ -24,7 +26,8 @@
 			$(document).ready(function() {
 				//array_rand = <?php echo json_encode($_SESSION['random']);?>;
 				//console.log(array_rand);
-
+				rows = ($('.row').find('li').length)/4;
+				console.log("rows: "+rows);
 				var color_field = $('.color_picker>ul>li');
 				var colors = $('.color_picker>ul');
 				no = 0;
@@ -70,14 +73,7 @@
 							   'font-family':'Helvetica',
 								'background':'rgb(46, 204, 113)',
 								'color':'white'});
-				
-				//$(ok_button).css({top: 200, left: 200, position:'absolute'});
-				//$(ok_button).css({'width':'100px',
-				//				'height':'100px'});
-				//$(ok_button).css('background','blue');
-				//$('body').append(ok_button);
-				
-				//$('body').append('<p>Test</p>');
+
 				$(color_field).on('click', function(){
 					color = $(this).find('span').attr('id');
 					css_color = $(this).find('span').css('background');
@@ -123,10 +119,16 @@
 					}
 				}
 
+				function fail_message() {
+					if(white !== 4 && num === (rows-1)) {
+								alert("fail");
+					}
+				}
+
 				function success_msg() {
 					console.log('gewonnen');
-					var x = no > 1 ? "e" : "";
-					$('body').append("<div id='success'>Herzlichen Glückwunsch! Sie haben "+num+" Versuch"+x+" benötigt<button id='rm_msg'>OK</button></div>");
+					var x = no > 1 ? "s" : "";
+					$('body').append("<div id='success'>Congratulations! It took you "+num+" attempt"+x+"<button id='rm_msg'>OK</button></div>");
 					//$('body').append("<p>Herzlichen Glückwunsch!</p>");
 				}
 
@@ -139,6 +141,7 @@
 						prev = no.toString();
 						console.log("Black: " + black);
 						console.log("White: " + white);
+						console.log("num: "+typeof null);
 						no++;
 						num = no.toString();
 						$('.row').removeAttr('id');
@@ -149,6 +152,7 @@
 						console.log("row active: " + no + " sting: " + num);
 						get_matching_hint_html();
 						check_if_solved();
+						fail_message();
 						y_pos = y_pos + parseInt($('.row').css('height'));
 						$('#ok').css('top', y_pos);
 						console.log(y_pos);

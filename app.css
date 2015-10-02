@@ -4,11 +4,11 @@
 				 max-width: 380px;
 				 display:block;}
 
-.game_grid 		{width: 56%;
-				margin-left: 2%;
+.game_grid 		{width: 60% !important;
 				 float:right;}
 
 .row 			{display:block;
+				 margin: 0 !important;
 				 height: 80px;}
 
 
@@ -91,7 +91,8 @@ ul:nth-of-type(odd)  {background: rgba(0,0,255,.2);}
 
 input[type="submit"],
 select						 {padding:.2rem;
-					  		font-size: 1rem;
+					  		font-size: 2rem;
+					  		border-radius: 3px;
 					  		margin-bottom:.5rem;
 					  		margin-right: .5rem;}
 
@@ -109,4 +110,6 @@ select						 {padding:.2rem;
 #rm_msg    {margin-left: 1rem;}
 .bullets	{margin-bottom: 0 !important;
 				}
+
+							
 
